@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h1><a href="http://116.33.177.58:8080/lol_bottom/bwhole">전체 순위</a></h1>
+	<form name="formChamps" method="get" action="bcounter" encType="UTF-8">
+		<div>
+		아군원딜 <input type="text" name="myAdc">
+		아군서폿 <input type="text" name="mySup">
+		</div>
+		<br><br>
+		<div>
+		상대원딜 <input type="text" name="enemyAdc">
+		상대서폿 <input type="text" name="enemySup">
+		</div>
+		<br>
+		
+		당신의 포지션은?(상대방 정보만 입력했을시에만 체크하시면 됩니다)<br> 
+		>>>>>>
+		<input type="radio" name="chk_info" value="ADC" checked="checked">ADC
+		<input type="radio" name="chk_info" value="SUP">SUP
+		<br><br>
+		<input type="submit" value="계산">
+		<input type="reset" value="리셋"><br>
+	</form>
+	
+</body>
+</html>
