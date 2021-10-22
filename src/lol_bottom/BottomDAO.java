@@ -7,11 +7,15 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import version_checker.VersionChecker;
+
 public class BottomDAO {
+	String nowVersion =VersionChecker.getVer_Underbar();
 	//lol_data	yanoos@//192.168.219.101:1521/XE
 	public ArrayList<BottomDto> mkBtList() throws ClassNotFoundException, SQLException {
 		String url = "jdbc:oracle:thin:@192.168.219.101:1521/XE";
 		String sql="SELECT * FROM ALL_WINRATE_11_20 where whole>30 order by win_rate DESC";
+		sql="SELECT * FROM ALL_WINRATE_"+nowVersion+" where whole>30 order by win_rate DESC";
 		
 		ArrayList<BottomDto> btList = new ArrayList<BottomDto>();
 		

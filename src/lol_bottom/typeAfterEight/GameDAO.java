@@ -11,18 +11,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import lol_bottom.BottomDto;
+import version_checker.VersionChecker;
 
 public class GameDAO {
 	private PreparedStatement pstmt;
 	private Connection con;
 	String champ;
 	String champ2;
+	String nowVersion =VersionChecker.getVer(); 
 	public GameDAO(String champ) {
 		this.champ=champ;
 	}
 	public ArrayList<GameDTO> listGames() throws ClassNotFoundException, SQLException{
 		String url = "jdbc:oracle:thin:@192.168.219.101:1521/XE";
 		String sql="SELECT LOL_BLUE.WIN AS BWIN, LOL_RED.WIN AS RWIN, LOL_BLUE.ADC AS BADC, LOL_RED.ADC AS RADC, LOL_BLUE.SUP AS BSUP, LOL_RED.SUP AS RSUP FROM LOL_BLUE INNER JOIN LOL_RED ON LOL_BLUE.GAMEID=LOL_RED.GAMEID INNER JOIN LOL_TIME_V ON LOL_RED.GAMEID=lol_time_v.gameid WHERE (lol_time_v.version='11.20' AND (lol_red.adc='"+this.champ+"' OR LOL_BLUE.ADC='"+this.champ+"'))";
+		sql="SELECT LOL_BLUE.WIN AS BWIN, LOL_RED.WIN AS RWIN, LOL_BLUE.ADC AS BADC, LOL_RED.ADC AS RADC, LOL_BLUE.SUP AS BSUP, LOL_RED.SUP AS RSUP FROM LOL_BLUE INNER JOIN LOL_RED ON LOL_BLUE.GAMEID=LOL_RED.GAMEID INNER JOIN LOL_TIME_V ON LOL_RED.GAMEID=lol_time_v.gameid WHERE (lol_time_v.version='"+nowVersion+"' AND (lol_red.adc='"+this.champ+"' OR LOL_BLUE.ADC='"+this.champ+"'))";
+		
 		
 		ArrayList<GameDTO> gameList = new ArrayList<GameDTO>();
 		
@@ -62,6 +66,7 @@ public class GameDAO {
 	public ArrayList<GameDTO> listGames2() throws ClassNotFoundException, SQLException{
 		String url = "jdbc:oracle:thin:@192.168.219.101:1521/XE";
 		String sql="SELECT LOL_BLUE.WIN AS BWIN, LOL_RED.WIN AS RWIN, LOL_BLUE.ADC AS BADC, LOL_RED.ADC AS RADC, LOL_BLUE.SUP AS BSUP, LOL_RED.SUP AS RSUP FROM LOL_BLUE INNER JOIN LOL_RED ON LOL_BLUE.GAMEID=LOL_RED.GAMEID INNER JOIN LOL_TIME_V ON LOL_RED.GAMEID=lol_time_v.gameid WHERE (lol_time_v.version='11.20' AND (lol_red.sup='"+this.champ+"' OR LOL_BLUE.SUP='"+this.champ+"'))";
+		sql="SELECT LOL_BLUE.WIN AS BWIN, LOL_RED.WIN AS RWIN, LOL_BLUE.ADC AS BADC, LOL_RED.ADC AS RADC, LOL_BLUE.SUP AS BSUP, LOL_RED.SUP AS RSUP FROM LOL_BLUE INNER JOIN LOL_RED ON LOL_BLUE.GAMEID=LOL_RED.GAMEID INNER JOIN LOL_TIME_V ON LOL_RED.GAMEID=lol_time_v.gameid WHERE (lol_time_v.version='"+nowVersion+"' AND (lol_red.adc='"+this.champ+"' OR LOL_BLUE.ADC='"+this.champ+"'))";
 		
 		ArrayList<GameDTO> gameList = new ArrayList<GameDTO>();
 		
@@ -101,7 +106,7 @@ public class GameDAO {
 	public ArrayList<GameDTO> listGames3() throws ClassNotFoundException, SQLException{
 		String url = "jdbc:oracle:thin:@192.168.219.101:1521/XE";
 		String sql="SELECT LOL_BLUE.WIN AS BWIN, LOL_RED.WIN AS RWIN, LOL_BLUE.ADC AS BADC, LOL_RED.ADC AS RADC, LOL_BLUE.SUP AS BSUP, LOL_RED.SUP AS RSUP FROM LOL_BLUE INNER JOIN LOL_RED ON LOL_BLUE.GAMEID=LOL_RED.GAMEID INNER JOIN LOL_TIME_V ON LOL_RED.GAMEID=lol_time_v.gameid WHERE (lol_time_v.version='11.20' AND (lol_red.adc='"+this.champ+"' and lol_red.sup='"+this.champ2+"') OR (LOL_BLUE.adc='"+this.champ+"' and lol_blue.sup='"+this.champ2+"'))";
-		
+		sql="SELECT LOL_BLUE.WIN AS BWIN, LOL_RED.WIN AS RWIN, LOL_BLUE.ADC AS BADC, LOL_RED.ADC AS RADC, LOL_BLUE.SUP AS BSUP, LOL_RED.SUP AS RSUP FROM LOL_BLUE INNER JOIN LOL_RED ON LOL_BLUE.GAMEID=LOL_RED.GAMEID INNER JOIN LOL_TIME_V ON LOL_RED.GAMEID=lol_time_v.gameid WHERE (lol_time_v.version='"+nowVersion+"' AND (lol_red.adc='"+this.champ+"' OR LOL_BLUE.ADC='"+this.champ+"'))";
 		ArrayList<GameDTO> gameList = new ArrayList<GameDTO>();
 		
 		Class.forName("oracle.jdbc.driver.OracleDriver");

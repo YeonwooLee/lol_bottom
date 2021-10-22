@@ -8,9 +8,12 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
+
+import version_checker.VersionChecker;
 	
 public class ChampRow {
 	String champ;
+	String nowVersion =VersionChecker.getVer_Underbar();
 	private String tableName;
 	//lol_data	yanoos@//192.168.219.101:1521/XE
 	public ChampRow(String champ,String tableName) {
@@ -20,6 +23,7 @@ public class ChampRow {
 	public ArrayList<BottomDto> mkBtList() throws ClassNotFoundException, SQLException {
 		String url = "jdbc:oracle:thin:@192.168.219.101:1521/XE";
 		String sql="select * from "+this.tableName+" WHERE ENEMY_COMBI LIKE "+this.champ;
+		sql="select * from "+this.tableName+" WHERE ENEMY_COMBI LIKE "+this.champ+" AND ENEMY_COMBI LIKE '%"+nowVersion+"%'";
 		
 		ArrayList<BottomDto> btList = new ArrayList<BottomDto>();
 		
