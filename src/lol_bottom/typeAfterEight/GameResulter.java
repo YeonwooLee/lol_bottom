@@ -674,28 +674,99 @@ public class GameResulter {
 	//3. 승패 기록하면 될듯
 	//4. 아군원딜_아군서폿::상대원딜(고정) 리스트 반ㄹ환하면됨
 	public ArrayList<String> new_both_adc(String champname,String champNew,int minPanSoo)  throws ClassNotFoundException, SQLException {
-		GameDAO a = new GameDAO(champname);
-		a.champ2=champNew;
+		GameDAO a = new GameDAO(champname);//기준챔
+		a.champ2=champNew;//상대챔
 		ArrayList<String> result = new ArrayList<String>();
-		ArrayList<GameDTO> arr = a.listGames_bothAdc();//케이틀린이 있었던 모든 게임을 가져와 arr에 넣습니다
+		ArrayList<GameDTO> arr = a.listGames_bothAdc();//기준챔+상대챔이 있었던 모든 게임을 가져와 arr에 넣습니다
 		
-		HashMap<String,BottomDto> map = new HashMap<String,BottomDto>();//케이틀린 상대전적 계산을 위한 해쉬맵입니다
+		HashMap<String,BottomDto> map = new HashMap<String,BottomDto>();//기준챔 상대전적 계산을 위한 해쉬맵입니다
 		
 		boolean mainChampWin;
 		boolean subChampWin;
 		String mainChamp=a.champ;
 		String subChamp = null;
-		
+		String mainTeamChamp = null;
 		//객체원딜의 카운터 원딜을 구하는 것
 		for(int i=0;i<arr.size();i++) { //gamedto 반복문 돌립니다
 			GameDTO nowGame=arr.get(i);
-			System.out.print(nowGame.getBadc());
-			System.out.print(nowGame.getBsup());
-			System.out.println(nowGame.getBwin());
-			System.out.print(nowGame.getRadc());
-			System.out.print(nowGame.getRsup());
-			System.out.println(nowGame.getRwin());
+
+			//기준챔이 이겼는지 졌는지랑 기준서폿 뭔지
+			if(nowGame.getBadc().equals(mainChamp)) {
+				mainChampWin=true;
+				mainTeamChamp=nowGame.getBsup(); //블루원딜이 기준챔이니 블루서폿이 기준팀챔
+			}else {
+				mainChampWin=false;
+				mainTeamChamp=nowGame.getRsup(); //레드원딜이 기준챔이니 레드서폿이 기준팀챔
+			}
+			
+			
+			//map에 기록
+			//키 이미 있는경우
+			if (map.containsKey(mainChamp+"_"+mainTeamChamp)) {
+				//총게임수기록
+				map.get(mainChamp+"_"+mainTeamChamp).whole+=1;
+				//승패기록
+				if (mainChampWin) {
+					map.get(mainChamp+"_"+mainTeamChamp).win+=1;
+				}else {
+					map.get(mainChamp+"_"+mainTeamChamp).lose+=1;
+				}
+				map.get(mainChamp+"_"+mainTeamChamp).win_rate=(float) (Math.round(map.get(mainChamp+"_"+mainTeamChamp).win/map.get(mainChamp+"_"+mainTeamChamp).whole*10000)/100.0);
+			}else {//키 없는 경우
+				BottomDto temp = new BottomDto();
+				temp.whole=1;
+				if(mainChampWin) {
+					temp.win=1;
+					temp.lose=0;
+					temp.win_rate=(float)100.0;
+				}else {
+					temp.win=0;
+					temp.lose=1;
+					temp.win_rate=(float)0.0;
+				}
+				map.put(mainChamp+"_"+mainTeamChamp,temp);
+			}
+			//찐최종 결과물, 이거 리스트화 해서 리턴하면됨
+			for (Entry<String,BottomDto> entrySet: map.entrySet()) {
+				//System.out.println(entrySet.getKey()
+				//		+" :: "+entrySet.getValue().Enemy_combi
+				//		+","+entrySet.getValue().whole
+				//		+","+entrySet.getValue().win
+				//		+","+entrySet.getValue().lose
+				//		+","+Math.round(((float)entrySet.getValue().win/(float)entrySet.getValue().whole)*10000)/100.0
+				//		);
+
+				result.add(a.champ2
+						+" :: "+entrySet.getKey()
+						+","+entrySet.getValue().whole
+						+","+entrySet.getValue().win
+						+","+entrySet.getValue().lose
+						+","+Math.round(((float)entrySet.getValue().win/(float)entrySet.getValue().whole)*10000)/100.0
+						);
+			}
+			
+			
+			Collections.sort(result,new DanilComparator());
+			//판 이하인 애들 제거
+			ArrayList<String> tempForDel = new ArrayList<String>();
+			for(int i=0;i<result.size();i++) {
+				String[] split_result = result.get(i).split(",");
+				int panSoo=Integer.parseInt(split_result[1]);
+				
+				if (panSoo<minPanSoo) { //<<<<<<여기가 판수
+					tempForDel.add(result.get(i));
+				}
+			}for(int i=0;i<tempForDel.size();i++) {
+				result.remove(tempForDel.get(i));
+			}
+			
+			
+			System.out.println("EEEEE");
+			for(int i=0;i<result.size();i++) {
+				System.out.println(result.get(i));
+					
 		}
+		
 		return result;
 	}
 	
