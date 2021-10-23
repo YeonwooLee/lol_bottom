@@ -72,7 +72,7 @@ public class FindCounterServlet extends HttpServlet {
 		engToKo.put("케이틀린", "CAITLYN");
 		engToKo.put("카밀", "CAMILLE");
 		engToKo.put("카시오페아", "CASSIOPEIA");
-		engToKo.put("초가스", "CHO'GATH");
+		engToKo.put("초가스", "CHOGATH");
 		engToKo.put("코르키", "CORKI");
 		engToKo.put("다리우스", "DARIUS");
 		engToKo.put("다이애나", "DIANA");
@@ -103,7 +103,7 @@ public class FindCounterServlet extends HttpServlet {
 		engToKo.put("제이스", "JAYCE");
 		engToKo.put("진", "JHIN");
 		engToKo.put("징크스", "JINX");
-		engToKo.put("카이사", "KAI'SA");
+		engToKo.put("카이사", "KAISA");
 		engToKo.put("칼리스타", "KALISTA");
 		engToKo.put("카르마", "KARMA");
 		engToKo.put("카서스", "KARTHUS");
@@ -112,10 +112,10 @@ public class FindCounterServlet extends HttpServlet {
 		engToKo.put("케일", "KAYLE");
 		engToKo.put("케인", "KAYN");
 		engToKo.put("케넨", "KENNEN");
-		engToKo.put("카직스", "KHA'ZIX");
+		engToKo.put("카직스", "KHAZIX");
 		engToKo.put("킨드레드", "KINDRED");
 		engToKo.put("클레드", "KLED");
-		engToKo.put("코그모", "KOG'MAW");
+		engToKo.put("코그모", "KOGMAW");
 		engToKo.put("르블랑", "LEBLANC");
 		engToKo.put("리 신", "LEESIN");
 		engToKo.put("레오나", "LEONA");
@@ -149,7 +149,7 @@ public class FindCounterServlet extends HttpServlet {
 		engToKo.put("퀸", "QUINN");
 		engToKo.put("라칸", "RAKAN");
 		engToKo.put("람머스", "RAMMUS");
-		engToKo.put("렉사이", "REK'SAI");
+		engToKo.put("렉사이", "REKSAI");
 		engToKo.put("렐", "RELL");
 		engToKo.put("레넥톤", "RENEKTON");
 		engToKo.put("렝가", "RENGAR");
@@ -189,7 +189,7 @@ public class FindCounterServlet extends HttpServlet {
 		engToKo.put("바루스", "VARUS");
 		engToKo.put("베인", "VAYNE");
 		engToKo.put("베이가", "VEIGAR");
-		engToKo.put("벨코즈", "VEL'KOZ");
+		engToKo.put("벨코즈", "VELKOZ");
 		engToKo.put("벡스", "VEX");
 		engToKo.put("바이", "VI");
 		engToKo.put("비에고", "VIEGO");
@@ -218,6 +218,8 @@ public class FindCounterServlet extends HttpServlet {
 		String es=request.getParameter("enemySup");
 		String ea=request.getParameter("enemyAdc");
 		String cp = request.getParameter("chk_info"); //client position
+		
+		
 		ms=engToKo.get(request.getParameter("mySup"));
 		ma=engToKo.get(request.getParameter("myAdc"));
 		es=engToKo.get(request.getParameter("enemySup"));
