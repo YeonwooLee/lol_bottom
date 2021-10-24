@@ -220,10 +220,10 @@ public class FindCounterServlet extends HttpServlet {
 		String cp = request.getParameter("chk_info"); //client position
 		
 		
-		ms=engToKo.get(request.getParameter("mySup"));
-		ma=engToKo.get(request.getParameter("myAdc"));
-		es=engToKo.get(request.getParameter("enemySup"));
-		ea=engToKo.get(request.getParameter("enemyAdc"));		
+		//ms=engToKo.get(request.getParameter("mySup"));
+		//ma=engToKo.get(request.getParameter("myAdc"));
+		//es=engToKo.get(request.getParameter("enemySup"));
+		//ea=engToKo.get(request.getParameter("enemyAdc"));		
 		
 
 
@@ -260,6 +260,11 @@ public class FindCounterServlet extends HttpServlet {
 				&&!ea.contentEquals("")
 				&&!es.contentEquals("")) {
 			searchType=6;
+		}else if(!ma.contentEquals("")
+				&&!ms.contentEquals("")
+				&&!ea.contentEquals("")
+				&&!es.contentEquals("")) {
+			searchType=-1;
 		}else if(!ma.contentEquals("")
 				&&ms.contentEquals("")
 				&&ea.contentEquals("")
@@ -315,145 +320,145 @@ public class FindCounterServlet extends HttpServlet {
 		
 		
 		
-		if(searchType==1) {
-			//나중에 이프 tpye==one으로 처리, BottomResulter.type_one(아군서폿,상대원딜알때)
-			String mySup = "'%_"+ms+"_%'"; //아군 서폿이 있는 테이블을 뽑아옵니다 
-			String enemyAdc = "'"+ea+"%'";//아군 서폿이 있는 테이블 중 상대원딜이 있는 행을 가져옵니다 
+		if(searchType==1) { //상대서폿알고 아군원딜 찾을때
+			//나중에 이프 tpye==two으로 처리, BottomResulter.type_one(아군원딜,상대서폿알때)
 			
+			GameResulter t = new GameResulter();
 			try {
-				ArrayList<String> typeOneResult=br.type_one(mySup, enemyAdc,2);
-				out.print("<html><body><h1>들어온입력:아군서폿,상대원딜</h1><h1><a href='http://116.33.177.58:8080/lol_bottom/FindCounter.html'>홈으로</a></h1><table border=1>");
+				ArrayList<String> typeOneResult=t.new_ms_ea(ms,ea,10);
+				out.print("<html><body><h1>들어온입력:아군서폿, 상대원딜</h1><h1><a href='http://116.33.177.58:8080/lol_bottom/FindCounter.html'>홈으로</a></h1><table border=1>");
 				out.print("<tr align='center' bgcolor='lightgreen'><td>결과</td></tr>");
 				for (int i=0;i<typeOneResult.size();i++) {
 					out.print("<tr><td>"+typeOneResult.get(i)+"</td></tr>");				
 				}
-				out.print("</table></body></html>");
+				out.print("</table>");
+				out.print("</body></html>");
 				
 			} catch (ClassNotFoundException | SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}else if(searchType==2) {
+		}else if(searchType==2) { //상대서폿알고 아군원딜 찾을때
 			//나중에 이프 tpye==two으로 처리, BottomResulter.type_one(아군원딜,상대서폿알때)
-			String mySup = "'"+ma+"%'"; //아군 서폿이 있는 테이블을 뽑아옵니다 
-			String enemyAdc = "'%_"+es+"_%'";//아군 서폿이 있는 테이블 중 상대원딜이 있는 행을 가져옵니다 
 			
+			GameResulter t = new GameResulter();
 			try {
-				ArrayList<String> typeOneResult=br.type_one(mySup, enemyAdc,2);
-				out.print("<html><body><h1>들어온입력:아군원딜,상대서폿</h1><h1><a href='http://116.33.177.58:8080/lol_bottom/FindCounter.html'>홈으로</a></h1><table border=1>");
+				ArrayList<String> typeOneResult=t.new_ma_es(ma,es,10);
+				out.print("<html><body><h1>들어온입력:아군원딜, 상대서폿</h1><h1><a href='http://116.33.177.58:8080/lol_bottom/FindCounter.html'>홈으로</a></h1><table border=1>");
 				out.print("<tr align='center' bgcolor='lightgreen'><td>결과</td></tr>");
 				for (int i=0;i<typeOneResult.size();i++) {
 					out.print("<tr><td>"+typeOneResult.get(i)+"</td></tr>");				
 				}
-				out.print("</table></body></html>");
+				out.print("</table>");
+				out.print("</body></html>");
 				
 			} catch (ClassNotFoundException | SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}else if(searchType==3) { //아군서폿,상대서폿 알 때
+		}else if(searchType==3) { //상대서폿알고 아군원딜 찾을때
 			//나중에 이프 tpye==two으로 처리, BottomResulter.type_one(아군원딜,상대서폿알때)
-			String mySup ="'%_"+ms+"_%'"; //아군 서폿이 있는 테이블을 뽑아옵니다 
-			String enemyAdc = "'%_"+es+"_%'";//아군 서폿이 있는 테이블 중 상대원딜이 있는 행을 가져옵니다 
 			
+			GameResulter t = new GameResulter();
 			try {
-				ArrayList<String> typeOneResult=br.type_one(mySup, enemyAdc,2);
-				out.print("<html><body><h1>들어온입력:아군서폿,상대서폿</h1><h1><a href='http://116.33.177.58:8080/lol_bottom/FindCounter.html'>홈으로</a></h1><table border=1>");
+				ArrayList<String> typeOneResult=t.new_both_sup(ms,es,10);
+				out.print("<html><body><h1>들어온입력:아군서폿, 상대서폿</h1><h1><a href='http://116.33.177.58:8080/lol_bottom/FindCounter.html'>홈으로</a></h1><table border=1>");
 				out.print("<tr align='center' bgcolor='lightgreen'><td>결과</td></tr>");
 				for (int i=0;i<typeOneResult.size();i++) {
 					out.print("<tr><td>"+typeOneResult.get(i)+"</td></tr>");				
 				}
-				out.print("</table></body></html>");
+				out.print("</table>");
+				out.print("</body></html>");
 				
 			} catch (ClassNotFoundException | SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}else if(searchType==4) { //아군원딜,상대원딜 알 때
+		}else if(searchType==4) { //상대서폿알고 아군원딜 찾을때
 			//나중에 이프 tpye==two으로 처리, BottomResulter.type_one(아군원딜,상대서폿알때)
-			String mySup = "'"+ma+"%'"; //아군 서폿이 있는 테이블을 뽑아옵니다 
-			String enemyAdc = "'"+ea+"%'";//아군 서폿이 있는 테이블 중 상대원딜이 있는 행을 가져옵니다 
 			
+			GameResulter t = new GameResulter();
 			try {
-				ArrayList<String> typeOneResult=br.type_one(mySup, enemyAdc,2);
-				out.print("<html><body><h1>들어온입력:아군원딜,상대원딜</h1><h1><a href='http://116.33.177.58:8080/lol_bottom/FindCounter.html'>홈으로</a></h1><table border=1>");
+				ArrayList<String> typeOneResult=t.new_both_adc(ma,ea,10);
+				out.print("<html><body><h1>들어온입력:아군원딜, 상대원딜</h1><h1><a href='http://116.33.177.58:8080/lol_bottom/FindCounter.html'>홈으로</a></h1><table border=1>");
 				out.print("<tr align='center' bgcolor='lightgreen'><td>결과</td></tr>");
 				for (int i=0;i<typeOneResult.size();i++) {
 					out.print("<tr><td>"+typeOneResult.get(i)+"</td></tr>");				
 				}
-				out.print("</table></body></html>");
+				out.print("</table>");
+				out.print("</body></html>");
 				
 			} catch (ClassNotFoundException | SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}else if(searchType==5) { //아군서폿,상대원딜서폿 알 때
+		}else if(searchType==5) { //상대서폿알고 아군원딜 찾을때
 			//나중에 이프 tpye==two으로 처리, BottomResulter.type_one(아군원딜,상대서폿알때)
-			String mySup = "'%_"+ms+"_%'"; //아군 서폿이 있는 테이블을 뽑아옵니다 
-			String enemyAdc = "'"+ea+"_"+request.getParameter("enemySup")+"%'";//아군 서폿이 있는 테이블 중 상대원딜이 있는 행을 가져옵니다 
 			
+			GameResulter t = new GameResulter();
 			try {
-				ArrayList<String> typeOneResult=br.type_one(mySup, enemyAdc,2);
-				out.print("<html><body><h1>들어온입력:아군서폿,상대원딜,상대서폿</h1><h1><a href='http://116.33.177.58:8080/lol_bottom/FindCounter.html'>홈으로</a></h1><table border=1>");
+				ArrayList<String> typeOneResult=t.new_ms_ea_es(ms,ea,es,2);
+				out.print("<html><body><h1>들어온입력:아군서폿, 상대원딜,상대서폿</h1><h1><a href='http://116.33.177.58:8080/lol_bottom/FindCounter.html'>홈으로</a></h1><table border=1>");
 				out.print("<tr align='center' bgcolor='lightgreen'><td>결과</td></tr>");
 				for (int i=0;i<typeOneResult.size();i++) {
 					out.print("<tr><td>"+typeOneResult.get(i)+"</td></tr>");				
 				}
-				out.print("</table></body></html>");
+				out.print("</table>");
+				out.print("</body></html>");
 				
 			} catch (ClassNotFoundException | SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}else if(searchType==6) { //아군원딜,상대원딜서폿 알 때
+		}else if(searchType==6) { //상대서폿알고 아군원딜 찾을때
 			//나중에 이프 tpye==two으로 처리, BottomResulter.type_one(아군원딜,상대서폿알때)
-			String mySup = "'"+ma+"%'"; //아군 서폿이 있는 테이블을 뽑아옵니다 
-			String enemyAdc = "'"+ea+"_"+request.getParameter("enemySup")+"%'";//아군 서폿이 있는 테이블 중 상대원딜이 있는 행을 가져옵니다 
 			
+			GameResulter t = new GameResulter();
 			try {
-				ArrayList<String> typeOneResult=br.type_one(mySup, enemyAdc,2);
-				out.print("<html><body><h1>들어온입력:아군원딜,상대원딜,상대서폿</h1><h1><a href='http://116.33.177.58:8080/lol_bottom/FindCounter.html'>홈으로</a></h1><table border=1>");
+				ArrayList<String> typeOneResult=t.new_ma_ea_es(ma,ea,es,2);
+				out.print("<html><body><h1>들어온입력:아군서폿, 상대원딜,상대서폿</h1><h1><a href='http://116.33.177.58:8080/lol_bottom/FindCounter.html'>홈으로</a></h1><table border=1>");
 				out.print("<tr align='center' bgcolor='lightgreen'><td>결과</td></tr>");
 				for (int i=0;i<typeOneResult.size();i++) {
 					out.print("<tr><td>"+typeOneResult.get(i)+"</td></tr>");				
 				}
-				out.print("</table></body></html>");
+				out.print("</table>");
+				out.print("</body></html>");
 				
 			} catch (ClassNotFoundException | SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}else if(searchType==7) { //아군원딜만 알 때
+		}else if(searchType==7) { //상대서폿알고 아군원딜 찾을때
 			//나중에 이프 tpye==two으로 처리, BottomResulter.type_one(아군원딜,상대서폿알때)
-			String mySup = "'"+ma+"%'"; //아군 서폿이 있는 테이블을 뽑아옵니다 
-			String enemyAdc = "'%%'";//아군 서폿이 있는 테이블 중 상대원딜이 있는 행을 가져옵니다 
 			
+			GameResulter t = new GameResulter();
 			try {
-				ArrayList<String> typeOneResult=br.type_one(mySup, enemyAdc,2);
-				out.print("<html><body><h1>들어온입력:아군원딜</h1><h1><a href='http://116.33.177.58:8080/lol_bottom/FindCounter.html'>홈으로</a></h1><table border=1>");
+				ArrayList<String> typeOneResult=t.new_ma_only(ma,30);
+				out.print("<html><body><h1>들어온입력:아군서폿, 상대원딜,상대서폿</h1><h1><a href='http://116.33.177.58:8080/lol_bottom/FindCounter.html'>홈으로</a></h1><table border=1>");
 				out.print("<tr align='center' bgcolor='lightgreen'><td>결과</td></tr>");
 				for (int i=0;i<typeOneResult.size();i++) {
 					out.print("<tr><td>"+typeOneResult.get(i)+"</td></tr>");				
 				}
-				out.print("</table></body></html>");
+				out.print("</table>");
+				out.print("</body></html>");
 				
 			} catch (ClassNotFoundException | SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}else if(searchType==8) { //아군서폿만 알 때
+		}else if(searchType==8) { //상대서폿알고 아군원딜 찾을때
 			//나중에 이프 tpye==two으로 처리, BottomResulter.type_one(아군원딜,상대서폿알때)
-			String mySup = "'%_"+ms+"_%'"; //아군 서폿이 있는 테이블을 뽑아옵니다 
-			String enemyAdc = "'%%'";//아군 서폿이 있는 테이블 중 상대원딜이 있는 행을 가져옵니다 
 			
+			GameResulter t = new GameResulter();
 			try {
-				ArrayList<String> typeOneResult=br.type_one(mySup, enemyAdc,2);
-				out.print("<html><body><h1>들어온입력:아군서폿</h1><h1><a href='http://116.33.177.58:8080/lol_bottom/FindCounter.html'>홈으로</a></h1><table border=1>");
+				ArrayList<String> typeOneResult=t.new_ms_only(ms,30);
+				out.print("<html><body><h1>들어온입력:아군서폿, 상대원딜,상대서폿</h1><h1><a href='http://116.33.177.58:8080/lol_bottom/FindCounter.html'>홈으로</a></h1><table border=1>");
 				out.print("<tr align='center' bgcolor='lightgreen'><td>결과</td></tr>");
 				for (int i=0;i<typeOneResult.size();i++) {
 					out.print("<tr><td>"+typeOneResult.get(i)+"</td></tr>");				
 				}
-				out.print("</table></body></html>");
+				out.print("</table>");
+				out.print("</body></html>");
 				
 			} catch (ClassNotFoundException | SQLException e) {
 				// TODO Auto-generated catch block
@@ -556,6 +561,24 @@ public class FindCounterServlet extends HttpServlet {
 			try {
 				ArrayList<String> typeOneResult=t.danilSangdaeKnow6(ea,es,3);
 				out.print("<html><body><h1>들어온입력:상대원딜서폿</h1><h1><a href='http://116.33.177.58:8080/lol_bottom/FindCounter.html'>홈으로</a></h1><table border=1>");
+				out.print("<tr align='center' bgcolor='lightgreen'><td>결과</td></tr>");
+				for (int i=0;i<typeOneResult.size();i++) {
+					out.print("<tr><td>"+typeOneResult.get(i)+"</td></tr>");				
+				}
+				out.print("</table>");
+				out.print("</body></html>");
+				
+			} catch (ClassNotFoundException | SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}else if(searchType==-1) { //전부다알떄
+			//나중에 이프 tpye==two으로 처리, BottomResulter.type_one(아군원딜,상대서폿알때)
+			
+			GameResulter t = new GameResulter();
+			try {
+				ArrayList<String> typeOneResult=t.new_all(ms,ea,es,ma,1);
+				out.print("<html><body><h1>들어온입력:전체</h1><h1><a href='http://116.33.177.58:8080/lol_bottom/FindCounter.html'>홈으로</a></h1><table border=1>");
 				out.print("<tr align='center' bgcolor='lightgreen'><td>결과</td></tr>");
 				for (int i=0;i<typeOneResult.size();i++) {
 					out.print("<tr><td>"+typeOneResult.get(i)+"</td></tr>");				

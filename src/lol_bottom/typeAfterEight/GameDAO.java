@@ -18,6 +18,8 @@ public class GameDAO {
 	private Connection con;
 	String champ;
 	String champ2;
+	String champ3;
+	String champ4;
 	String nowVersion =VersionChecker.getVer(); 
 	public GameDAO(String champ) {
 		this.champ=champ;
@@ -160,9 +162,403 @@ public class GameDAO {
 				"            FROM LOL_BLUE INNER JOIN LOL_RED ON LOL_BLUE.GAMEID=LOL_RED.GAMEID \r\n" + 
 				"            INNER JOIN LOL_TIME_V ON LOL_RED.GAMEID=lol_time_v.gameid \r\n" + 
 				"            WHERE \r\n" + 
-				"            (lol_time_v.version='11.20' \r\n" + 
+				"            (lol_time_v.version='"+nowVersion+"' \r\n" + 
 				"            AND (lol_red.adc='"+this.champ+"' and lol_blue.adc='"+this.champ2+"') \r\n" + 
 				"                    OR (LOL_BLUE.adc='"+this.champ+"' and lol_red.adc='"+this.champ2+"'))";
+		ArrayList<GameDTO> gameList = new ArrayList<GameDTO>();
+		
+		Class.forName("oracle.jdbc.driver.OracleDriver");
+		Connection con=DriverManager.getConnection(url,"yanoos","dudn0915");
+		Statement st = con.createStatement();
+		ResultSet rs = st.executeQuery(sql);
+		
+		while(rs.next()) {	
+			String bwin = rs.getString("BWIN");
+			String badc = rs.getString("BADC");
+			String bsup = rs.getString("BSUP");
+			
+			String rwin = rs.getString("RWIN");
+			String radc = rs.getString("RADC");
+			String rsup = rs.getString("RSUP");
+			
+			
+			GameDTO dto = new GameDTO();
+			dto.setBwin(bwin);
+			dto.setBadc(badc);
+			dto.setBsup(bsup);
+			
+			dto.setRwin(rwin);
+			dto.setRadc(radc);
+			dto.setRsup(rsup);
+			gameList.add(dto);
+		}
+		rs.close();
+		st.close();
+		con.close();
+		
+		return gameList;	
+	}
+	//양팀 서폿 아는 경우
+	public ArrayList<GameDTO> listGames_bothSup() throws ClassNotFoundException, SQLException{
+		String url = "jdbc:oracle:thin:@192.168.219.101:1521/XE";
+		
+		String sql="SELECT LOL_BLUE.WIN AS BWIN, \r\n" + 
+				"        LOL_BLUE.ADC AS BADC,\r\n" + 
+				"        LOL_BLUE.SUP AS BSUP, \r\n" + 
+				"        LOL_RED.WIN AS RWIN, \r\n" + 
+				"        LOL_RED.ADC AS RADC, \r\n" + 
+				"        LOL_RED.SUP AS RSUP \r\n" + 
+				"            FROM LOL_BLUE INNER JOIN LOL_RED ON LOL_BLUE.GAMEID=LOL_RED.GAMEID \r\n" + 
+				"            INNER JOIN LOL_TIME_V ON LOL_RED.GAMEID=lol_time_v.gameid \r\n" + 
+				"            WHERE \r\n" + 
+				"            (lol_time_v.version='"+nowVersion+"' \r\n" + 
+				"            AND (lol_red.sup='"+this.champ+"' and lol_blue.sup='"+this.champ2+"') \r\n" + 
+				"                    OR (LOL_BLUE.sup='"+this.champ+"' and lol_red.sup='"+this.champ2+"'))";
+		ArrayList<GameDTO> gameList = new ArrayList<GameDTO>();
+		
+		Class.forName("oracle.jdbc.driver.OracleDriver");
+		Connection con=DriverManager.getConnection(url,"yanoos","dudn0915");
+		Statement st = con.createStatement();
+		ResultSet rs = st.executeQuery(sql);
+		
+		while(rs.next()) {	
+			String bwin = rs.getString("BWIN");
+			String bsup = rs.getString("BADC");
+			String badc = rs.getString("BSUP");
+			
+			String rwin = rs.getString("RWIN");
+			String rsup = rs.getString("RADC");
+			String radc = rs.getString("RSUP");
+			
+			
+			GameDTO dto = new GameDTO();
+			dto.setBwin(bwin);
+			dto.setBadc(badc);
+			dto.setBsup(bsup);
+			
+			dto.setRwin(rwin);
+			dto.setRadc(radc);
+			dto.setRsup(rsup);
+			gameList.add(dto);
+		}
+		rs.close();
+		st.close();
+		con.close();
+		
+		return gameList;	
+	}
+	//아군원딜상대서폿
+	public ArrayList<GameDTO> listGames_MaEs() throws ClassNotFoundException, SQLException{
+		String url = "jdbc:oracle:thin:@192.168.219.101:1521/XE";
+		
+		String sql="SELECT LOL_BLUE.WIN AS BWIN, \r\n" + 
+				"        LOL_BLUE.ADC AS BADC,\r\n" + 
+				"        LOL_BLUE.SUP AS BSUP, \r\n" + 
+				"        LOL_RED.WIN AS RWIN, \r\n" + 
+				"        LOL_RED.ADC AS RADC, \r\n" + 
+				"        LOL_RED.SUP AS RSUP \r\n" + 
+				"            FROM LOL_BLUE INNER JOIN LOL_RED ON LOL_BLUE.GAMEID=LOL_RED.GAMEID \r\n" + 
+				"            INNER JOIN LOL_TIME_V ON LOL_RED.GAMEID=lol_time_v.gameid \r\n" + 
+				"            WHERE \r\n" + 
+				"            (lol_time_v.version='"+nowVersion+"' \r\n" + 
+				"            AND (lol_red.adc='"+this.champ+"' and lol_blue.sup='"+this.champ2+"') \r\n" + 
+				"                    OR (LOL_BLUE.adc='"+this.champ+"' and lol_red.sup='"+this.champ2+"'))";
+		ArrayList<GameDTO> gameList = new ArrayList<GameDTO>();
+		
+		Class.forName("oracle.jdbc.driver.OracleDriver");
+		Connection con=DriverManager.getConnection(url,"yanoos","dudn0915");
+		Statement st = con.createStatement();
+		ResultSet rs = st.executeQuery(sql);
+		
+		while(rs.next()) {	
+			String bwin = rs.getString("BWIN");
+			String badc = rs.getString("BADC");
+			String bsup = rs.getString("BSUP");
+			
+			String rwin = rs.getString("RWIN");
+			String radc = rs.getString("RADC");
+			String rsup = rs.getString("RSUP");
+			
+			
+			GameDTO dto = new GameDTO();
+			dto.setBwin(bwin);
+			dto.setBadc(badc);
+			dto.setBsup(bsup);
+			
+			dto.setRwin(rwin);
+			dto.setRadc(radc);
+			dto.setRsup(rsup);
+			gameList.add(dto);
+		}
+		rs.close();
+		st.close();
+		con.close();
+		
+		return gameList;	
+	}
+	
+	//아군서폿상대원딜
+	public ArrayList<GameDTO> listGames_MsEa() throws ClassNotFoundException, SQLException{
+		String url = "jdbc:oracle:thin:@192.168.219.101:1521/XE";
+		
+		String sql="SELECT LOL_BLUE.WIN AS BWIN, \r\n" + 
+				"        LOL_BLUE.ADC AS BADC,\r\n" + 
+				"        LOL_BLUE.SUP AS BSUP, \r\n" + 
+				"        LOL_RED.WIN AS RWIN, \r\n" + 
+				"        LOL_RED.ADC AS RADC, \r\n" + 
+				"        LOL_RED.SUP AS RSUP \r\n" + 
+				"            FROM LOL_BLUE INNER JOIN LOL_RED ON LOL_BLUE.GAMEID=LOL_RED.GAMEID \r\n" + 
+				"            INNER JOIN LOL_TIME_V ON LOL_RED.GAMEID=lol_time_v.gameid \r\n" + 
+				"            WHERE \r\n" + 
+				"            (lol_time_v.version='"+nowVersion+"' \r\n" + 
+				"            AND (lol_red.sup='"+this.champ+"' and lol_blue.adc='"+this.champ2+"') \r\n" + 
+				"                    OR (LOL_BLUE.sup='"+this.champ+"' and lol_red.adc='"+this.champ2+"'))";
+		ArrayList<GameDTO> gameList = new ArrayList<GameDTO>();
+		
+		Class.forName("oracle.jdbc.driver.OracleDriver");
+		Connection con=DriverManager.getConnection(url,"yanoos","dudn0915");
+		Statement st = con.createStatement();
+		ResultSet rs = st.executeQuery(sql);
+		
+		while(rs.next()) {	
+			String bwin = rs.getString("BWIN");
+			String badc = rs.getString("BADC");
+			String bsup = rs.getString("BSUP");
+			
+			String rwin = rs.getString("RWIN");
+			String radc = rs.getString("RADC");
+			String rsup = rs.getString("RSUP");
+			
+			
+			GameDTO dto = new GameDTO();
+			dto.setBwin(bwin);
+			dto.setBadc(badc);
+			dto.setBsup(bsup);
+			
+			dto.setRwin(rwin);
+			dto.setRadc(radc);
+			dto.setRsup(rsup);
+			gameList.add(dto);
+		}
+		rs.close();
+		st.close();
+		con.close();
+		
+		return gameList;	
+	}
+	//아군서폿상대원딜서폿
+	public ArrayList<GameDTO> listGames_MsEaEs() throws ClassNotFoundException, SQLException{
+		String url = "jdbc:oracle:thin:@192.168.219.101:1521/XE";
+		
+		String sql="SELECT LOL_BLUE.WIN AS BWIN, \r\n" + 
+				"        LOL_BLUE.ADC AS BADC,\r\n" + 
+				"        LOL_BLUE.SUP AS BSUP, \r\n" + 
+				"        LOL_RED.WIN AS RWIN, \r\n" + 
+				"        LOL_RED.ADC AS RADC, \r\n" + 
+				"        LOL_RED.SUP AS RSUP \r\n" + 
+				"            FROM LOL_BLUE INNER JOIN LOL_RED ON LOL_BLUE.GAMEID=LOL_RED.GAMEID \r\n" + 
+				"            INNER JOIN LOL_TIME_V ON LOL_RED.GAMEID=lol_time_v.gameid \r\n" + 
+				"            WHERE \r\n" + 
+				"            (lol_time_v.version='"+nowVersion+"' \r\n" + 
+				"            AND (lol_red.sup='"+this.champ+"' and lol_blue.adc='"+this.champ2+"' and lol_blue.sup='"+this.champ3+"') \r\n" + 
+				"                    OR (LOL_BLUE.sup='"+this.champ+"' and lol_red.adc='"+this.champ2+"' and lol_red.sup='"+this.champ3+"'))";
+		ArrayList<GameDTO> gameList = new ArrayList<GameDTO>();
+		
+		Class.forName("oracle.jdbc.driver.OracleDriver");
+		Connection con=DriverManager.getConnection(url,"yanoos","dudn0915");
+		Statement st = con.createStatement();
+		ResultSet rs = st.executeQuery(sql);
+		
+		while(rs.next()) {	
+			String bwin = rs.getString("BWIN");
+			String badc = rs.getString("BADC");
+			String bsup = rs.getString("BSUP");
+			
+			String rwin = rs.getString("RWIN");
+			String radc = rs.getString("RADC");
+			String rsup = rs.getString("RSUP");
+			
+			
+			GameDTO dto = new GameDTO();
+			dto.setBwin(bwin);
+			dto.setBadc(badc);
+			dto.setBsup(bsup);
+			
+			dto.setRwin(rwin);
+			dto.setRadc(radc);
+			dto.setRsup(rsup);
+			gameList.add(dto);
+		}
+		rs.close();
+		st.close();
+		con.close();
+		
+		return gameList;	
+	}
+	//아군원딜상대원딜서폿 타입6
+	public ArrayList<GameDTO> listGames_MaEaEs() throws ClassNotFoundException, SQLException{
+		String url = "jdbc:oracle:thin:@192.168.219.101:1521/XE";
+		
+		String sql="SELECT LOL_BLUE.WIN AS BWIN, \r\n" + 
+				"        LOL_BLUE.ADC AS BADC,\r\n" + 
+				"        LOL_BLUE.SUP AS BSUP, \r\n" + 
+				"        LOL_RED.WIN AS RWIN, \r\n" + 
+				"        LOL_RED.ADC AS RADC, \r\n" + 
+				"        LOL_RED.SUP AS RSUP \r\n" + 
+				"            FROM LOL_BLUE INNER JOIN LOL_RED ON LOL_BLUE.GAMEID=LOL_RED.GAMEID \r\n" + 
+				"            INNER JOIN LOL_TIME_V ON LOL_RED.GAMEID=lol_time_v.gameid \r\n" + 
+				"            WHERE \r\n" + 
+				"            (lol_time_v.version='"+nowVersion+"' \r\n" + 
+				"            AND (lol_red.adc='"+this.champ+"' and lol_blue.adc='"+this.champ2+"' and lol_blue.sup='"+this.champ3+"') \r\n" + 
+				"                    OR (LOL_BLUE.adc='"+this.champ+"' and lol_red.adc='"+this.champ2+"' and lol_red.sup='"+this.champ3+"'))";
+		ArrayList<GameDTO> gameList = new ArrayList<GameDTO>();
+		
+		Class.forName("oracle.jdbc.driver.OracleDriver");
+		Connection con=DriverManager.getConnection(url,"yanoos","dudn0915");
+		Statement st = con.createStatement();
+		ResultSet rs = st.executeQuery(sql);
+		
+		while(rs.next()) {	
+			String bwin = rs.getString("BWIN");
+			String badc = rs.getString("BADC");
+			String bsup = rs.getString("BSUP");
+			
+			String rwin = rs.getString("RWIN");
+			String radc = rs.getString("RADC");
+			String rsup = rs.getString("RSUP");
+			
+			
+			GameDTO dto = new GameDTO();
+			dto.setBwin(bwin);
+			dto.setBadc(badc);
+			dto.setBsup(bsup);
+			
+			dto.setRwin(rwin);
+			dto.setRadc(radc);
+			dto.setRsup(rsup);
+			gameList.add(dto);
+		}
+		rs.close();
+		st.close();
+		con.close();
+		
+		return gameList;	
+	}
+	//아군원딜상대원딜서폿 타입7
+	public ArrayList<GameDTO> listGames_MaOnly() throws ClassNotFoundException, SQLException{
+		String url = "jdbc:oracle:thin:@192.168.219.101:1521/XE";
+		
+		String sql="SELECT LOL_BLUE.WIN AS BWIN, \r\n" + 
+				"        LOL_BLUE.ADC AS BADC,\r\n" + 
+				"        LOL_BLUE.SUP AS BSUP, \r\n" + 
+				"        LOL_RED.WIN AS RWIN, \r\n" + 
+				"        LOL_RED.ADC AS RADC, \r\n" + 
+				"        LOL_RED.SUP AS RSUP \r\n" + 
+				"            FROM LOL_BLUE INNER JOIN LOL_RED ON LOL_BLUE.GAMEID=LOL_RED.GAMEID \r\n" + 
+				"            INNER JOIN LOL_TIME_V ON LOL_RED.GAMEID=lol_time_v.gameid \r\n" + 
+				"            WHERE \r\n" + 
+				"            (lol_time_v.version='"+nowVersion+"' \r\n" + 
+				"            AND (lol_red.adc='"+this.champ+"') \r\n" + 
+				"                    OR (LOL_BLUE.adc='"+this.champ+"'))";
+		ArrayList<GameDTO> gameList = new ArrayList<GameDTO>();
+		
+		Class.forName("oracle.jdbc.driver.OracleDriver");
+		Connection con=DriverManager.getConnection(url,"yanoos","dudn0915");
+		Statement st = con.createStatement();
+		ResultSet rs = st.executeQuery(sql);
+		
+		while(rs.next()) {	
+			String bwin = rs.getString("BWIN");
+			String badc = rs.getString("BADC");
+			String bsup = rs.getString("BSUP");
+			
+			String rwin = rs.getString("RWIN");
+			String radc = rs.getString("RADC");
+			String rsup = rs.getString("RSUP");
+			
+			
+			GameDTO dto = new GameDTO();
+			dto.setBwin(bwin);
+			dto.setBadc(badc);
+			dto.setBsup(bsup);
+			
+			dto.setRwin(rwin);
+			dto.setRadc(radc);
+			dto.setRsup(rsup);
+			gameList.add(dto);
+		}
+		rs.close();
+		st.close();
+		con.close();
+		
+		return gameList;	
+	}
+	
+	//아군원딜상대원딜서폿 타입8
+	public ArrayList<GameDTO> listGames_MsOnly() throws ClassNotFoundException, SQLException{
+		String url = "jdbc:oracle:thin:@192.168.219.101:1521/XE";
+		
+		String sql="SELECT LOL_BLUE.WIN AS BWIN, \r\n" + 
+				"        LOL_BLUE.ADC AS BADC,\r\n" + 
+				"        LOL_BLUE.SUP AS BSUP, \r\n" + 
+				"        LOL_RED.WIN AS RWIN, \r\n" + 
+				"        LOL_RED.ADC AS RADC, \r\n" + 
+				"        LOL_RED.SUP AS RSUP \r\n" + 
+				"            FROM LOL_BLUE INNER JOIN LOL_RED ON LOL_BLUE.GAMEID=LOL_RED.GAMEID \r\n" + 
+				"            INNER JOIN LOL_TIME_V ON LOL_RED.GAMEID=lol_time_v.gameid \r\n" + 
+				"            WHERE \r\n" + 
+				"            (lol_time_v.version='"+nowVersion+"' \r\n" + 
+				"            AND (lol_red.sup='"+this.champ+"') \r\n" + 
+				"                    OR (LOL_BLUE.sup='"+this.champ+"'))";
+		ArrayList<GameDTO> gameList = new ArrayList<GameDTO>();
+		
+		Class.forName("oracle.jdbc.driver.OracleDriver");
+		Connection con=DriverManager.getConnection(url,"yanoos","dudn0915");
+		Statement st = con.createStatement();
+		ResultSet rs = st.executeQuery(sql);
+		
+		while(rs.next()) {	
+			String bwin = rs.getString("BWIN");
+			String badc = rs.getString("BADC");
+			String bsup = rs.getString("BSUP");
+			
+			String rwin = rs.getString("RWIN");
+			String radc = rs.getString("RADC");
+			String rsup = rs.getString("RSUP");
+			
+			
+			GameDTO dto = new GameDTO();
+			dto.setBwin(bwin);
+			dto.setBadc(badc);
+			dto.setBsup(bsup);
+			
+			dto.setRwin(rwin);
+			dto.setRadc(radc);
+			dto.setRsup(rsup);
+			gameList.add(dto);
+		}
+		rs.close();
+		st.close();
+		con.close();
+		
+		return gameList;	
+	}
+	//모든조합 타입-1
+	public ArrayList<GameDTO> listGames_all() throws ClassNotFoundException, SQLException{
+		String url = "jdbc:oracle:thin:@192.168.219.101:1521/XE";
+		
+		String sql="SELECT LOL_BLUE.WIN AS BWIN, \r\n" + 
+				"        LOL_BLUE.ADC AS BADC,\r\n" + 
+				"        LOL_BLUE.SUP AS BSUP, \r\n" + 
+				"        LOL_RED.WIN AS RWIN, \r\n" + 
+				"        LOL_RED.ADC AS RADC, \r\n" + 
+				"        LOL_RED.SUP AS RSUP \r\n" + 
+				"            FROM LOL_BLUE INNER JOIN LOL_RED ON LOL_BLUE.GAMEID=LOL_RED.GAMEID \r\n" + 
+				"            INNER JOIN LOL_TIME_V ON LOL_RED.GAMEID=lol_time_v.gameid \r\n" + 
+				"            WHERE \r\n" + 
+				"            (lol_time_v.version='"+nowVersion+"' \r\n" + 
+				"            AND (lol_red.sup='"+this.champ+"' and lol_red.adc='"+this.champ4+"' and lol_blue.adc='"+this.champ2+"' and lol_blue.sup='"+this.champ3+"') \r\n" + 
+				"                    OR (LOL_BLUE.sup='"+this.champ+"' and lol_blue.adc='"+this.champ4+"' and lol_red.adc='"+this.champ2+"' and lol_red.sup='"+this.champ3+"'))";
 		ArrayList<GameDTO> gameList = new ArrayList<GameDTO>();
 		
 		Class.forName("oracle.jdbc.driver.OracleDriver");
